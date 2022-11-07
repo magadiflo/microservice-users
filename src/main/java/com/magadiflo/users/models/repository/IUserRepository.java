@@ -1,7 +1,9 @@
 package com.magadiflo.users.models.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.magadiflo.users.models.entity.User;
 
@@ -43,11 +45,31 @@ import com.magadiflo.users.models.entity.User;
  * De forma automática, esta dependencia oculta el ID del user, pero también se
  * puede configurar para poder exponer ese id
  * 
+ * Hasta ahora, con el endpoint anterior podremos acceder a los métodos CRUD del
+ * CrudRepository. Pero, ¿que pasa si queremos acceder al método personalizado
+ * que definimos en esta interfaz?, ¿cómo lo hacemos?
+ * 
+ * Para acceder a los métodos personalizados que definamos en esta interfaz,
+ * debemos acceder al mismo endpoint anterior concatenando el /search:
+ * 
+ * .../search/findByUsername?username=magadiflo, donde findByUsername, es el
+ * nombre del método personalizado, seguida del nombre de los parámetros y su
+ * valor, quedando así:
+ * 
+ * http://localhost:8090/api/users/users/search/findByUsername?username=magadiflo
+ * 
+ * Ahora, si queremos darle otro nombre al nombre del método y a los parámetros
+ * lo haríamos anotando el método personalizado con @RestResource y el @Param,
+ * tal como se ve en el método findByUsername, finalmente el nuevo endpoint
+ * quedaría:
+ * 
+ * http://localhost:8090/api/users/users/search/find-username?user=magadiflo
  */
 
 @RepositoryRestResource(path = "users")
 public interface IUserRepository extends PagingAndSortingRepository<User, Long> {
 
-	User findByUsername(String username);
+	@RestResource(path = "find-username")
+	User findByUsername(@Param(value = "user") String username);
 
 }
