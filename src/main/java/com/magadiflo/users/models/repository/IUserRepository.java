@@ -5,7 +5,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import com.magadiflo.users.models.entity.User;
+import com.magadiflo.commons.users.models.entity.User;
 
 /***
  * Implementando el CRUD completo de forma automática
